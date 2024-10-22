@@ -1,52 +1,49 @@
-include!("declarations.rs");
-include!("script_gen.rs");
-// use std::fs;
 
-// https://docs.rs/config-file/latest/config_file/
+pub mod lab2;
 
-fn main() -> Result<(), u8>  {
+use std::env;
+use std::sync::atomic::Ordering;
+use lab2::declarations::*;
+use lab2::play::Play;
+use lab2::script_gen::script_gen;
+
+
+fn main() -> Result<(), u8> {
     // open config file
     let mut config_file_name = String::new();
     let mut play_title = String::new();
     let mut play: Play = Vec::new();
 
     match parse_args(&mut config_file_name) {
-        Ok(()) => {
-            println!("Configuration file name: {}", config_file_name);
-        },
-        Err(_) =>  {
-            eprintln!("Error: Bad command line arguments provided.");
-            // std::process::exit(BAD_CMD_LINE);
+        Ok(()) => { }
+        Err(..) => {
+            eprintln!("ERROR: Bad command line arguments provided.");
             return Err(BAD_CMD_LINE);
         }
-    }
+    };
 
-    match script_gen(& config_file_name, &mut play_title, &mut play) {
+    match script_gen(&config_file_name, &mut play_title, &mut play) {
         Ok(()) => {
             play.sort();
             recite(&play_title, &play);
-        },
-        Err(_) => {
-            eprintln!("Error: Script Generation Failed.");
-            return Err(FAILED_TO_GENERATE_SCRIPT);
+            Ok(())
+        }
+        Err(..) => {
+            eprintln!("ERROR: Script Generation Failed.");
+            Err(FAILED_TO_GENERATE_SCRIPT)
         }
     }
-
-
-    // return Ok(()) for success
-    Ok(())
 }
 
-/// TODO Add function documentation, do this for everything in the future :)
 fn parse_args(config_file_name: &mut String) -> Result<(), u8> {
-
     let mut args: Vec<String> = Vec::new();
 
     for arg in env::args() {
         args.push(arg);
     }
 
-    if args.len() < MIN_ARGS || args.len() > MAX_ARGS || (args.len() == MAX_ARGS && args[OPT_WHINGE_POS] != "whinge") {
+    if args.len() < MIN_ARGS || args.len() > MAX_ARGS ||
+        (args.len() == MAX_ARGS && args[OPT_WHINGE_POS] != "whinge") {
         usage(&args[PROG_NAME_POS]);
         return Err(BAD_CMD_LINE);
     }
@@ -59,35 +56,32 @@ fn parse_args(config_file_name: &mut String) -> Result<(), u8> {
     Ok(())
 }
 
-/// Prints a helpful usage message
+// Prints a helpful usage message
 fn usage(program_name: &String) {
     println!("usage: {} <configuration_file_name> [whinge]", program_name);
 }
 
-/// TODO Add function documentation, do this for everything in the future :)
-fn recite(title: &String,  play: &Play) {
 
-    println!("Title is: {}", title);
+// Iterates through Play vector, prints the title, tracks the current character,
+// prints character names when they change, and outputs corresponding dialogue.
+fn recite(title: &String, play: &Play) {
+    println!("{}", title);
 
-    // initialize variable for current character
     let mut current_character: Option<&CharName> = None;
 
+    // used for reference:
+    // https://doc.rust-lang.org/rust-by-example/flow_control/match/destructuring/destructure_tuple.html
     for line_tuple in play {
         match line_tuple {
-            // REVIEW: what if character is an empty string? is that possible?
-            (_, character,line ) if !character.is_empty() => {
-                // do nothing if it's the same character as the current one
+            (_, character, line) => {
+                // if the character changes
                 if Some(character) != current_character {
                     println!();
-                    println!("{}.", character); // print current character with "." after
+                    println!("{}.", character);
                 }
-                current_character = Some(character); // update current_character
+                current_character = Some(character);
                 println!("{}", line);
-            }
-            (..) => {
-                return;
             }
         }
     }
 }
-
