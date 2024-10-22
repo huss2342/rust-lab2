@@ -9,7 +9,6 @@ type PlayConfig = Vec<(CharName, CharacterTextFile)>;
 pub struct Play {
     title: String,
     player: Vec<Player>,
-    player: Vec<Player>,
 }
 
 impl Play {
