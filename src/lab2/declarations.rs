@@ -1,4 +1,3 @@
-
 use std::sync::atomic::AtomicBool;
 
 pub type LineNum = usize;
