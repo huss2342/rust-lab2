@@ -3,8 +3,8 @@ use crate::lab2::declarations::{FAILED_TO_GENERATE_SCRIPT, WHINGE_MODE};
 use crate::lab2::script_gen::grab_trimmed_file_lines;
 type PlayLines = Vec<(usize, String)>;
 
-struct Player {
-    name: String,
+pub struct Player {
+    pub name: String,
     lines: PlayLines,
     index: usize
 }
