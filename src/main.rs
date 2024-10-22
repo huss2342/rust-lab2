@@ -4,6 +4,7 @@ pub mod lab2;
 use std::env;
 use std::sync::atomic::Ordering;
 use lab2::declarations::*;
+use lab2::
 use lab2::play::Play;
 use lab2::script_gen::script_gen;
 
