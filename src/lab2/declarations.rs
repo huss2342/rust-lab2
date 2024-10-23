@@ -1,3 +1,7 @@
+/// ADD FILE HEADER
+///
+///
+
 use std::sync::atomic::AtomicBool;
 
 pub type LineNum = usize;
@@ -15,6 +19,7 @@ pub static CONFIG_POS: usize = 1;
 pub static OPT_WHINGE_POS: usize = 2;
 
 // Return value constants
+pub static SUCCESS: u8 = 0;
 pub static BAD_CMD_LINE: u8 = 1;
 pub static FAILED_TO_GENERATE_SCRIPT: u8 = 2;
 

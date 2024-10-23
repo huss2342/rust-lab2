@@ -19,3 +19,14 @@ There are two main structs: Play and Player.
 - Play: handles the general script and contains a collection of players. More high level view.
 
 I made the methods public and imported them as needed, everything else would remain private.
+
+
+## Return Wrapper
+
+The return wrapper was a pretty simple implementation at first.  I created the struct
+and then implemented the report method as instructed.  There were a few complications though
+as I first created my own trait called Termination and didn't realize until after trying to compile
+that it needed to be using the trait from std::process.  Additionally, when implementing the new function
+I first just had it taking in a u8 before realizing that I needed to take in a Result
+that can be broken down in a match expression to initialize the ReturnWrapper struct.
+Other than those two things, it worked as expected.

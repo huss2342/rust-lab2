@@ -1,6 +1,11 @@
+/// ADD FILE HEADER
+///
+///
+
 use std::sync::atomic::Ordering;
 use crate::lab2::declarations::{FAILED_TO_GENERATE_SCRIPT, WHINGE_MODE};
 use crate::lab2::script_gen::grab_trimmed_file_lines;
+
 type PlayLines = Vec<(usize, String)>;
 
 pub struct Player {

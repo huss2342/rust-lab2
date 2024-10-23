@@ -1,3 +1,6 @@
+/// ADD FILE HEADER
+///
+///
 
 pub mod lab2;
 
@@ -5,11 +8,12 @@ use std::env;
 use std::sync::atomic::Ordering;
 use lab2::declarations::*;
 use lab2::play::Play;
-use lab2::player::Player;
+// use lab2::player::Player;
+use lab2::return_wrapper::ReturnWrapper;
 // use lab2::play::script_gen;
 
 
-fn main() -> Result<(), u8> {
+fn main() -> ReturnWrapper {
     // open config file
     let mut config_file_name = String::new();
     let mut play_title = String::new();
@@ -26,16 +30,17 @@ fn main() -> Result<(), u8> {
         },
         Err(..) => {
             eprintln!("ERROR: Bad command line arguments provided.");
-            return Err(BAD_CMD_LINE)
+            return ReturnWrapper::new(Err(BAD_CMD_LINE))
         }
     }
-    Ok(())
+    ReturnWrapper::new(Ok(()))
+    // FIXME what's the commented code here  -Nick
     // match script_gen(&config_file_name, &mut play_title, &mut play) {
     //     Ok(()) => {
     //         play.sort();
     //         recite(&play_title, &play);
     //         Ok(())
-    //     }
+    //     },
     //     Err(..) => {
     //         eprintln!("ERROR: Script Generation Failed.");
     //         Err(FAILED_TO_GENERATE_SCRIPT)
