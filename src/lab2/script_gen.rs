@@ -19,11 +19,28 @@ pub static CHARACTER_NAME_CONFIG_LINE_INDEX: usize = 0;
 pub static CHARACTER_FILE_CONFIG_LINE_INDEX: usize = 1;
 pub static CONFIG_LINE_TOKENS: usize = 2;
 
-pub(crate) fn grab_trimmed_file_lines(file_name: &String, file_lines: &mut Vec<String>) -> Result<(), u8> {
-    /*
-        found this from here because I was having a syntax issue
-        https://users.rust-lang.org/t/rust-file-open-error-handling/50681
-    */
+// TODO for the rest of the functions: documentation example taken from
+// https://deterministic.space/machine-readable-inline-markdown-code-cocumentation.html#markdown-formatting-conventions
+
+///
+/// Fills a vector with the lines in a file with the given name.
+///
+/// # Parameters
+///
+/// - `file_name`: A reference to a String that holds the name of the file to read
+/// - `file_lines`: A mutable reference to a vector where the lines will be added
+///
+/// # Returns
+///
+/// A `Result` which is:
+///
+/// - `Ok`: The file was successfully read and inputted into `file_lines`
+/// - `Err`: A `u8` value representing an error: unable to generate the script.
+///     This can occur if the file could not be opened or the function `read_line`
+///     returned an error while trying to read a line from the file.
+///
+pub fn grab_trimmed_file_lines(file_name: &String, file_lines: &mut Vec<String>) -> Result<(), u8> {
+
     let file = match File::open(file_name) {
         Ok(file) => file,
         Err(e) => {

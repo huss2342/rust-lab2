@@ -11,18 +11,81 @@ use std::sync::atomic::Ordering;
 
 type PlayConfig = Vec<(CharName, CharacterTextFile)>;
 
-pub struct Play {
+pub struct SceneFragment {
     title: String,
     players: Vec<Player>,
 }
 
-impl Play {
-    pub fn new() -> Play {
-        Play {
-            title: String::new(),
+impl SceneFragment {
+
+    /// TODO Add Documentation
+    pub fn new(title: String) -> SceneFragment {
+        SceneFragment {
+            title,
             players: Vec::new(),
         }
     }
+
+    ///
+    /// Print a message for every player that needs to enter for the next scene.
+    ///
+    /// # Parameters
+    ///
+    /// - `self`: A reference to self
+    /// - `other`: A reference to another instance of the struct SceneFragment
+    ///
+    fn enter(&self, other: &SceneFragment) {
+        for player in &other.players {
+            // if a player in the other scene is not in this scene
+            if !self.players.contains(&player) {
+                println!("[Enter {}.]", player.name);
+            }
+        }
+    }
+
+    ///
+    /// Print a message for every player in this scene stating that they are entering.
+    ///
+    /// # Parameters
+    ///
+    /// - `self`: A reference to self
+    ///
+    fn enter_all(&self) {
+        for player in &self.players {
+            println!("[Enter {}.]", player.name);
+        }
+    }
+
+    ///
+    /// Print a message for every player that isn't in the next scene to exit.
+    ///
+    /// # Parameters
+    ///
+    /// - `self`: A reference to self
+    /// - `other`: A reference to another instance of the struct SceneFragment
+    ///
+    fn exit(&self, other: &SceneFragment) {
+        for player in self.players.iter().rev() {
+            // if a player in this scene is not in the other scene
+            if !other.players.contains(&player) {
+                println!("[Enter {}.]", player.name);
+            }
+        }
+    }
+
+    ///
+    /// Print a message for every player in this scene stating that they are exiting.
+    ///
+    /// # Parameters
+    ///
+    /// - `self`: A reference to self
+    ///
+    fn exit_all(&self) {
+        for player in self.players.iter().rev() {
+            println!("[Enter {}.]", player.name);
+        }
+    }
+
 
     /// TODO Add Documentation
     fn process_config(&mut self, play_config: PlayConfig) -> Result<(), u8> { // I changed this to not be pub, hopefully that is fine
@@ -39,6 +102,7 @@ impl Play {
                 }
             }
         }
+        self.players.sort();
         Ok(())
     }
 
@@ -83,6 +147,7 @@ impl Play {
     }
 
     // was script_gen
+    /// TODO Add Documentation
     pub fn prepare(&mut self, config_file_name: &String) -> Result<(), u8> {
         let mut play_config: PlayConfig = vec![];
         let mut play_title: String = String::new();
@@ -97,6 +162,8 @@ impl Play {
     }
 
     // TODO: really not sure about this one. Nick: yeah it's def not working based on errors
+    // TODO: from part 12 and skipped over
+    // Also modify the appropriate place in the SceneFragment struct's associated recite method that prints out the struct's title string, so that it only prints it if it is non-blank (has at least one non-whitespace token).
     pub fn recite(&mut self) {
         let mut last_speaker = String::new();
         let mut current_line = 0;
