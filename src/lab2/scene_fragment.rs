@@ -12,16 +12,17 @@ use std::sync::atomic::Ordering;
 type PlayConfig = Vec<(CharName, CharacterTextFile)>;
 
 pub struct SceneFragment {
-    title: String,
+    // made public if that's ok
+    pub title: String,
     players: Vec<Player>,
 }
 
 impl SceneFragment {
 
-    /// TODO Add Documentation
-    pub fn new(title: String) -> SceneFragment {
+    /// changed parameter to reference to string and cloned string
+    pub fn new(title: &String) -> SceneFragment {
         SceneFragment {
-            title,
+            title: title.clone(),
             players: Vec::new(),
         }
     }
@@ -34,9 +35,12 @@ impl SceneFragment {
     /// - `self`: A reference to self
     /// - `other`: A reference to another instance of the struct SceneFragment
     ///
-    fn enter(&self, other: &SceneFragment) {
+    pub(crate) fn enter(&self, other: &SceneFragment) {
+        // should these two be switched?
+        // for player in &self.players {
         for player in &other.players {
             // if a player in the other scene is not in this scene
+            // if !other.players.contains(&player)
             if !self.players.contains(&player) {
                 println!("[Enter {}.]", player.name);
             }
@@ -50,7 +54,7 @@ impl SceneFragment {
     ///
     /// - `self`: A reference to self
     ///
-    fn enter_all(&self) {
+    pub(crate) fn enter_all(&self) {
         for player in &self.players {
             println!("[Enter {}.]", player.name);
         }
@@ -64,11 +68,11 @@ impl SceneFragment {
     /// - `self`: A reference to self
     /// - `other`: A reference to another instance of the struct SceneFragment
     ///
-    fn exit(&self, other: &SceneFragment) {
+    pub(crate) fn exit(&self, other: &SceneFragment) {
         for player in self.players.iter().rev() {
             // if a player in this scene is not in the other scene
             if !other.players.contains(&player) {
-                println!("[Enter {}.]", player.name);
+                println!("[Exit {}.]", player.name);
             }
         }
     }
@@ -80,9 +84,9 @@ impl SceneFragment {
     ///
     /// - `self`: A reference to self
     ///
-    fn exit_all(&self) {
+    pub(crate) fn exit_all(&self) {
         for player in self.players.iter().rev() {
-            println!("[Enter {}.]", player.name);
+            println!("[Exit {}.]", player.name);
         }
     }
 
@@ -147,14 +151,18 @@ impl SceneFragment {
     }
 
     // was script_gen
-    /// TODO Add Documentation
+    /// Added implementation to sort players by lines. Do we need to make the Err messages more explicit?
     pub fn prepare(&mut self, config_file_name: &String) -> Result<(), u8> {
         let mut play_config: PlayConfig = vec![];
         let mut play_title: String = String::new();
 
         match self.read_config(config_file_name, &mut play_title, &mut play_config) {
             Ok(..) => match self.process_config(play_config) {
-                Ok(..) => Ok(()),
+                Ok(..) => {
+                    //  after all Player structs have been added, sort them by lines
+                    self.players.sort();
+                    Ok(())
+                },
                 Err(e) => Err(e)
             },
             Err(e) => Err(e)
@@ -162,11 +170,17 @@ impl SceneFragment {
     }
 
     // TODO: really not sure about this one. Nick: yeah it's def not working based on errors
-    // TODO: from part 12 and skipped over
+    // TODO: from part 12 and skipped over - Becky: added part to print title. Should we create a while loop?
     // Also modify the appropriate place in the SceneFragment struct's associated recite method that prints out the struct's title string, so that it only prints it if it is non-blank (has at least one non-whitespace token).
     pub fn recite(&mut self) {
         let mut last_speaker = String::new();
         let mut current_line = 0;
+
+
+        // check to see if title contains only whitespace. If not, prints out scene title
+        if !self.title.trim().is_empty() {
+            println!("{}", self.title);
+        }
 
         for mut player in &mut self.players {
             if let Some(line_num) = player.next_line() {

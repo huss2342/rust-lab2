@@ -25,7 +25,7 @@ fn main() -> ReturnWrapper {
                 Ok(()) => {
                     play.recite();
                 },
-                Err(..) => ()
+                Err(..) => return ReturnWrapper::new(Err(FAILED_TO_GENERATE_SCRIPT)),
             }
         },
         Err(..) => {
@@ -34,6 +34,7 @@ fn main() -> ReturnWrapper {
         }
     }
     ReturnWrapper::new(Ok(()))
+
     // FIXME what's the commented code here  -Nick
     // match script_gen(&config_file_name, &mut play_title, &mut play) {
     //     Ok(()) => {

@@ -7,7 +7,7 @@ use std::cmp;
 use crate::lab2::declarations::{FAILED_TO_GENERATE_SCRIPT, WHINGE_MODE};
 use crate::lab2::script_gen::grab_trimmed_file_lines;
 
-type PlayLines = Vec<(usize, String)>;
+type PlayLines = Vec<(usize, String)>; // line number, line text
 
 static FIRST_LINE: usize = 0;
 
@@ -16,7 +16,6 @@ pub struct Player {
     lines: PlayLines,
     index: usize
 }
-
 
 impl Ord for Player {
     /// TODO We should do some extensive testing to ensure this works correctly, add documentation
@@ -43,11 +42,13 @@ impl Ord for Player {
         }
     }
 }
+
 impl PartialOrd for Player {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
+
 impl PartialEq for Player {
     fn eq(&self, other: &Self) -> bool {
         if self.lines.is_empty() && other.lines.is_empty() {
@@ -127,9 +128,10 @@ impl Player {
         self.index += 1;
     }
 
-    /// TODO Add Documentation
+    /// Rust Rover recommended removing redundant generic arguments for Option<(), usize>
     pub fn next_line(&self) -> Option<usize> {
-        if self.index < self.lines.len() { Some(self.lines[self.index].0) }
+        if self.index < self.lines.len() {Some(self.lines[self.index].0) }
         else { None }
     }
+
 }
