@@ -3,25 +3,22 @@
 ///
 
 pub mod lab2;
-
 use std::env;
 use std::sync::atomic::Ordering;
 use lab2::declarations::*;
 use lab2::play::Play;
-// use lab2::player::Player;
 use lab2::return_wrapper::ReturnWrapper;
-// use lab2::play::script_gen;
 
 
 fn main() -> ReturnWrapper {
-    // open config file
-    let mut config_file_name = String::new();
-    let mut play_title = String::new();
+    // open script config file
+    let mut script_file_name = String::new();
+    let mut play_scene = String::new();
 
-    match parse_args(&mut config_file_name) {
+    match parse_args(&mut script_file_name) {
         Ok(()) => {
             let mut play = Play::new();
-            match play.prepare(&config_file_name) {
+            match play.prepare(&script_file_name) {
                 Ok(()) => {
                     play.recite();
                 },
@@ -49,20 +46,21 @@ fn main() -> ReturnWrapper {
     // }
 }
 
-fn parse_args(config_file_name: &mut String) -> Result<(), u8> {
-    let mut args: Vec<String> = Vec::new();
+fn parse_args(script_file_name: &mut String) -> Result<(), u8> {
+    // let mut args: Vec<String> = Vec::new();
+    let mut args: Vec<String> = env::args().collect();
 
-    for arg in env::args() {
-        args.push(arg);
-    }
+    // for arg in env::args() {
+    //     args.push(arg);
+    // }
 
     if args.len() < MIN_ARGS || args.len() > MAX_ARGS ||
         (args.len() == MAX_ARGS && args[OPT_WHINGE_POS] != "whinge") {
-        usage(&args[PROG_NAME_POS]);
+        usage(&args[SCRIPT_NAME_POS]);
         return Err(BAD_CMD_LINE);
     }
 
-    *config_file_name = args[CONFIG_POS].clone();
+    *script_file_name = args[SCRIPT_FILE_POS].clone();
 
     if args.len() == MAX_ARGS {
         WHINGE_MODE.store(true, Ordering::SeqCst);
@@ -71,7 +69,7 @@ fn parse_args(config_file_name: &mut String) -> Result<(), u8> {
 }
 
 // Prints a helpful usage message
-fn usage(program_name: &String) {
-    println!("usage: {} <configuration_file_name> [whinge]", program_name);
+fn usage(script_name: &String) {
+    println!("usage: {} <script_file_name> [whinge]", script_name);
 }
 

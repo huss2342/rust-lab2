@@ -30,3 +30,15 @@ that it needed to be using the trait from std::process.  Additionally, when impl
 I first just had it taking in a u8 before realizing that I needed to take in a Result
 that can be broken down in a match expression to initialize the ReturnWrapper struct.
 Other than those two things, it worked as expected.
+
+## Scene Fragments
+
+The modification play.rs file was modified to have a StructConfig type, replacing PlayConfig, and replacing all 
+variables in the Play struct with Fragments type vector of SceneFragment structs. Within the impl block, all 
+functions were modified to replace old PlayConfig references and parameters, as well as changing names of 
+constraints and variables. Based on the new types and instructions, some function modifications were minimal, 
+like process_config(), while other functions were entirely overhauled, like recite(). Lastly, teh main file was
+modified from config_file_name to script_file_name, as well as updating any constants and variables that pertained
+to the old files. Design challenges were multiple mutable borrows in the recite function, which was solved by 
+implementing an iterator over the fragments. I also needed to make the enter and exit functions public to be able 
+for access in the recite function.

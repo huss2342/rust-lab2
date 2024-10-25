@@ -16,7 +16,12 @@ pub static MAX_ARGS: usize = 3;
 // Command line argument position constants
 pub static PROG_NAME_POS: usize = 0;
 pub static CONFIG_POS: usize = 1;
+
+pub static SCRIPT_NAME_POS: usize = 0;
+pub static SCRIPT_FILE_POS: usize = 1;
 pub static OPT_WHINGE_POS: usize = 2;
+
+pub static SCRIPT_FILE_LINE: usize = 1;
 
 // Return value constants
 pub static SUCCESS: u8 = 0;

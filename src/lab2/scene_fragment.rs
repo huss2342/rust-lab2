@@ -35,7 +35,7 @@ impl SceneFragment {
     /// - `self`: A reference to self
     /// - `other`: A reference to another instance of the struct SceneFragment
     ///
-    pub(crate) fn enter(&self, other: &SceneFragment) {
+    pub fn enter(&self, other: &SceneFragment) {
         // should these two be switched?
         // for player in &self.players {
         for player in &other.players {
@@ -54,7 +54,7 @@ impl SceneFragment {
     ///
     /// - `self`: A reference to self
     ///
-    pub(crate) fn enter_all(&self) {
+    pub fn enter_all(&self) {
         for player in &self.players {
             println!("[Enter {}.]", player.name);
         }
@@ -68,7 +68,7 @@ impl SceneFragment {
     /// - `self`: A reference to self
     /// - `other`: A reference to another instance of the struct SceneFragment
     ///
-    pub(crate) fn exit(&self, other: &SceneFragment) {
+    pub fn exit(&self, other: &SceneFragment) {
         for player in self.players.iter().rev() {
             // if a player in this scene is not in the other scene
             if !other.players.contains(&player) {
@@ -84,7 +84,7 @@ impl SceneFragment {
     ///
     /// - `self`: A reference to self
     ///
-    pub(crate) fn exit_all(&self) {
+    pub fn exit_all(&self) {
         for player in self.players.iter().rev() {
             println!("[Exit {}.]", player.name);
         }
@@ -175,21 +175,27 @@ impl SceneFragment {
     pub fn recite(&mut self) {
         let mut last_speaker = String::new();
         let mut current_line = 0;
-
+        let mut lines_spoken = true;
 
         // check to see if title contains only whitespace. If not, prints out scene title
         if !self.title.trim().is_empty() {
             println!("{}", self.title);
         }
 
-        for mut player in &mut self.players {
-            if let Some(line_num) = player.next_line() {
-                if WHINGE_MODE.load(Ordering::SeqCst) && current_line == 0 && line_num > 0 {
-                    eprintln!("ERROR: Missing line 0");
-                }
 
-                if line_num == current_line {
-                    player.speak(&mut last_speaker);
+        while lines_spoken {
+            lines_spoken = false;
+
+            for mut player in &mut self.players {
+                if let Some(line_num) = player.next_line() {
+                    if WHINGE_MODE.load(Ordering::SeqCst) && current_line == 0 && line_num > 0 {
+                        eprintln!("ERROR: Missing line 0");
+                    }
+
+                    if line_num == current_line {
+                        player.speak(&mut last_speaker);
+                        lines_spoken = true;
+                    }
                 }
             }
         }
