@@ -13,7 +13,7 @@ use lab2::return_wrapper::ReturnWrapper;
 fn main() -> ReturnWrapper {
     // open script config file
     let mut script_file_name = String::new();
-    let mut play_scene = String::new();
+    let mut play_scene = String::new(); // TODO why this no use?
 
     match parse_args(&mut script_file_name) {
         Ok(()) => {
@@ -48,6 +48,7 @@ fn main() -> ReturnWrapper {
 
 fn parse_args(script_file_name: &mut String) -> Result<(), u8> {
     // let mut args: Vec<String> = Vec::new();
+    // TODO if this is meant to be mut it's probably for a reason so we should make sure we are using it right
     let mut args: Vec<String> = env::args().collect();
 
     // for arg in env::args() {
