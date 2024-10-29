@@ -13,8 +13,8 @@ static FIRST_LINE: usize = 0;
 
 pub struct Player {
     pub name: String,
-    lines: PlayLines,
-    index: usize
+    pub lines: PlayLines,
+    pub index: usize
 }
 
 impl Ord for Player {
@@ -128,10 +128,14 @@ impl Player {
         self.index += 1;
     }
 
-    /// Rust Rover recommended removing redundant generic arguments for Option<(), usize>
+    /// TODO make documentation better
+    /// return the next line number for this player if there is a next line
     pub fn next_line(&self) -> Option<usize> {
-        if self.index < self.lines.len() {Some(self.lines[self.index].0) }
-        else { None }
+        if self.index < self.lines.len() {
+            Some(self.lines[self.index].0)
+        } else {
+            None
+        }
     }
 
 }

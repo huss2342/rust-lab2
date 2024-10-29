@@ -33,18 +33,23 @@ impl SceneFragment {
     /// # Parameters
     ///
     /// - `self`: A reference to self
-    /// - `other`: A reference to another instance of the struct SceneFragment
+    /// - `next`: A reference to another instance of the struct SceneFragment
     ///
-    pub fn enter(&self, other: &SceneFragment) {
-        // should these two be switched?
-        // for player in &self.players {
-        for player in &other.players {
-            // if a player in the other scene is not in this scene
-            // if !other.players.contains(&player)
-            if !self.players.contains(&player) {
-                println!("[Enter {}.]", player.name);
+    pub fn enter(&self, next: &SceneFragment) {
+        for next_player in &next.players {
+            // determine if the previous scene contains the player from the next scene
+            let mut contains = false;
+            for player in &self.players {
+                if player.name == next_player.name {
+                    contains = true;
+                }
+            }
+
+            if !contains {
+                println!("[Enter {}.]", next_player.name);
             }
         }
+
     }
 
     ///
@@ -66,12 +71,18 @@ impl SceneFragment {
     /// # Parameters
     ///
     /// - `self`: A reference to self
-    /// - `other`: A reference to another instance of the struct SceneFragment
+    /// - `next`: A reference to another instance of the struct SceneFragment
     ///
-    pub fn exit(&self, other: &SceneFragment) {
+    pub fn exit(&self, next: &SceneFragment) {
         for player in self.players.iter().rev() {
-            // if a player in this scene is not in the other scene
-            if !other.players.contains(&player) {
+            // determine if the next scene contains the player from the previous scene
+            let mut contains = false;
+            for next_player in &next.players {
+                if player.name == next_player.name {
+                    contains = true;
+                }
+            }
+            if !contains {
                 println!("[Exit {}.]", player.name);
             }
         }
@@ -129,8 +140,8 @@ impl SceneFragment {
     }
 
     /// TODO Add Documentation
-    fn read_config(&self, config_file_name: &String, play_title: &mut String,
-                   play_config: &mut PlayConfig) -> Result<(), u8> {
+    /// Nick: I needed to change this because this was built for how lab1 was built
+    fn read_config(&self, config_file_name: &String, play_config: &mut PlayConfig) -> Result<(), u8> {
         let mut lines: Vec<String> = Vec::new();
 
         match grab_trimmed_file_lines(config_file_name, &mut lines) {
@@ -139,11 +150,9 @@ impl SceneFragment {
                     // return error if not enough lines to generate the script
                     if lines.len() <= CHARACTER_CONFIG_LINE { return Err(FAILED_TO_GENERATE_SCRIPT); }
 
-                    *play_title = lines[TITLE_LINE].clone();
-
-                    // adding the remaining lines to the play configuration data structure
-                    Ok(for line in &lines[1..] {
-                        self.add_config(line, play_config)
+                    // add the config lines to the play configuration data structure
+                    Ok(for line in lines {
+                        self.add_config(&line, play_config);
                     })
                 }
             Err(..) => Err(FAILED_TO_GENERATE_SCRIPT)
@@ -154,9 +163,8 @@ impl SceneFragment {
     /// Added implementation to sort players by lines. Do we need to make the Err messages more explicit?
     pub fn prepare(&mut self, config_file_name: &String) -> Result<(), u8> {
         let mut play_config: PlayConfig = vec![];
-        let mut play_title: String = String::new();
 
-        match self.read_config(config_file_name, &mut play_title, &mut play_config) {
+        match self.read_config(config_file_name, &mut play_config) {
             Ok(..) => match self.process_config(play_config) {
                 Ok(..) => {
                     //  after all Player structs have been added, sort them by lines
@@ -172,34 +180,56 @@ impl SceneFragment {
     // TODO: really not sure about this one. Nick: yeah it's def not working based on errors
     // TODO: from part 12 and skipped over - Becky: added part to print title. Should we create a while loop?
     // Also modify the appropriate place in the SceneFragment struct's associated recite method that prints out the struct's title string, so that it only prints it if it is non-blank (has at least one non-whitespace token).
+    // DONE Nick: I think I fixed it, Becky had almost fixed it completely and I ended up more or less recoding what you had
     pub fn recite(&mut self) {
+        let mut cur_line: usize = 0;
+        let mut line_exists = true;
+        let mut lines_spoken: usize = 0;
         let mut last_speaker = String::new();
-        let mut current_line = 0;
-        let mut lines_spoken = true;
 
-        // check to see if title contains only whitespace. If not, prints out scene title
+        // check to see if ttitle contains only whitespace. If not, prints out scene ttitle
         if !self.title.trim().is_empty() {
             println!("{}", self.title);
         }
 
+        // return; // I don't want to deal with all the lines while debugging other things FIXME remove before submitting
 
-        while lines_spoken {
-            lines_spoken = false;
+        while line_exists {
+            line_exists = false;
+            lines_spoken = 0;
 
-            for mut player in &mut self.players {
+            for player in &mut self.players {
+
                 if let Some(line_num) = player.next_line() {
-                    if WHINGE_MODE.load(Ordering::SeqCst) && current_line == 0 && line_num > 0 {
-                        eprintln!("ERROR: Missing line 0");
+                    line_exists = true;
+                    if cur_line == 0 && line_num > 0 {
+                        if WHINGE_MODE.load(Ordering::SeqCst) {
+                            eprintln!("ERROR: Missing line 0");
+                        }
                     }
 
-                    if line_num == current_line {
+                    if line_num == cur_line {
                         player.speak(&mut last_speaker);
-                        lines_spoken = true;
+                        lines_spoken += 1;
                     }
                 }
             }
+            if WHINGE_MODE.load(Ordering::SeqCst) {
+                if lines_spoken == 1 {
+
+                } else {
+                    if line_exists {
+                        if lines_spoken == 0 {
+                            eprintln!("ERROR: Missing line {}", cur_line);
+                        } else {
+                            eprintln!("ERROR: Duplicate line on line {}", cur_line);
+                        }
+                    }
+                }
+            }
+            cur_line += 1;
         }
-        current_line += 1;
+
     }
 }
 

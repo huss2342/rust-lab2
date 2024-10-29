@@ -21,7 +21,12 @@ pub static SCRIPT_NAME_POS: usize = 0;
 pub static SCRIPT_FILE_POS: usize = 1;
 pub static OPT_WHINGE_POS: usize = 2;
 
-pub static SCRIPT_FILE_LINE: usize = 1;
+pub static SCENE_TOKEN_INDEX: usize = 0;
+pub static SCENE_TITLE_INDEX: usize = 1;
+pub static CONFIG_FILE_INDEX: usize = 0;
+pub static SCRIPT_CONFIG_LINE_TOKENS: usize = 1;
+
+pub static FIRST_SCENE_FRAGMENT: usize = 0;
 
 // Return value constants
 pub static SUCCESS: u8 = 0;

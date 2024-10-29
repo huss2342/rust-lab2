@@ -2,7 +2,7 @@
 ///
 ///
 
-use crate::lab2::declarations::{FAILED_TO_GENERATE_SCRIPT, WHINGE_MODE, SCRIPT_FILE_LINE};
+use crate::lab2::declarations::*;
 use crate::lab2::script_gen::{grab_trimmed_file_lines, CONFIG_LINE_TOKENS, TITLE_LINE};
 use std::sync::atomic::Ordering;
 use crate::lab2::scene_fragment::SceneFragment;
@@ -58,25 +58,25 @@ impl Play {
         if config_line_tokens.is_empty() {
             return;
         }
-        // check if first line is [scene]
-        if config_line_tokens[TITLE_LINE] == "[scene]" {
+        // check if first token in the line is [scene]
+        if config_line_tokens[SCENE_TOKEN_INDEX] == "[scene]" {
+
             // if no more tokens, skip and whinge
-            if config_line_tokens.len() == SCRIPT_FILE_LINE {
+            if config_line_tokens.len() == SCENE_TITLE_INDEX {
                 if WHINGE_MODE.load(Ordering::SeqCst) {
                     eprintln!("Missing scene title.")
                 }
-            }
-            else {
-                let scene_title = config_line_tokens[SCRIPT_FILE_LINE..].join(" ");
+            } else {
+                let scene_title = config_line_tokens[SCENE_TITLE_INDEX..].join(" ");
                 script_config.push((true, scene_title));
             }
-        }
-        else {
-            let config_file_name = config_line_tokens[SCRIPT_FILE_LINE].to_string();
+
+        } else { // if the line is a config file
+            let config_file_name = config_line_tokens[CONFIG_FILE_INDEX].to_string();
             script_config.push((false, config_file_name));
 
-            if config_line_tokens.len() >= CONFIG_LINE_TOKENS && WHINGE_MODE.load(Ordering::SeqCst) {
-                eprintln!("Provided config line has the wrong number of tokens.");
+            if config_line_tokens.len() >= SCRIPT_CONFIG_LINE_TOKENS && WHINGE_MODE.load(Ordering::SeqCst) {
+                eprintln!("Provided script has a config line with the wrong number of tokens.");
             }
         }
     }
@@ -113,7 +113,8 @@ impl Play {
                 match self.process_config(script_config) {
                     Ok(()) => {
                         // check for fragments and title
-                        if !self.fragments.is_empty() && !self.fragments[SCRIPT_FILE_LINE].title.trim().is_empty() {
+                        if !self.fragments.is_empty()
+                                && !self.fragments[FIRST_SCENE_FRAGMENT].title.trim().is_empty() {
                             Ok(())
                         }
                         else  {
@@ -150,17 +151,67 @@ impl Play {
         while let Some(fragment) = iter.next() {
 
             if let Some(previous) = previous_fragment {
-                fragment.enter(previous);
+                previous.exit(fragment);
+                previous.enter(fragment);
             }
             fragment.recite();
 
-            if let Some(next_fragment) = iter.peek() {
-                fragment.exit(next_fragment);
-            }
-            else {
+            // if let Some(next_fragment) = iter.peek() {
+            //     fragment.exit(next_fragment);
+            // }
+            if iter.peek().is_none() {
                 fragment.exit_all();
             }
             previous_fragment = Some(fragment);
         }
     }
+
+    // pub fn recite(&mut self) {
+    //     if self.fragments.is_empty() {
+    //         eprintln!("ERROR: No scene fragments");
+    //         return;
+    //     }
+    //
+    //     // instantiate an iterator
+    //     let mut iter = self.fragments.iter_mut().peekable();
+    //     // let mut prev_iter = self.fragments.iter().peekable();
+    //     let mut previous_fragment: Option<SceneFragment> = None;
+    //     // let first_scene = true;
+    //
+    //     // handle first fragment separately to avoid mutable borrows
+    //     // if let Some(fragment) = iter.next() {
+    //     //     fragment.enter_all();
+    //     //     fragment.recite();
+    //     //     previous_fragment = Some(fragment);
+    //     // }
+    //
+    //     // handle last fragment
+    //     // while let Some(fragment) = iter. {
+    //     for fragment in &mut self.fragments {
+    //
+    //         if let Some(previous) = previous_fragment {
+    //             previous.exit(fragment);
+    //             fragment.enter(previous);
+    //         } else {
+    //             fragment.enter_all();
+    //         }
+    //
+    //         fragment.recite();
+    //
+    //
+    //
+    //         if iter.peek().is_none() {
+    //             fragment.exit_all();
+    //         } else {
+    //             // if let Some(previous) = previous_fragment {
+    //             //     // if let Some(next_fragment) = iter.peek() {
+    //             //     //     fragment.exit(next_fragment);
+    //             //
+    //             // }
+    //         }
+    //
+    //         previous_fragment = Some(fragment);
+    //         prev_iter.next();
+    //     }
+    // }
 }
