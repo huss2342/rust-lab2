@@ -103,7 +103,7 @@ impl SceneFragment {
 
 
     /// TODO Add Documentation
-    fn process_config(&mut self, play_config: PlayConfig) -> Result<(), u8> { // I changed this to not be pub, hopefully that is fine
+    fn process_config(&mut self, play_config: PlayConfig) -> Result<(), u8> {
         for config in play_config {
             match config {
                 (char_name, part_file_name) => {
@@ -111,7 +111,7 @@ impl SceneFragment {
                     if let Err(e) = player.prepare(&part_file_name) {
                         eprintln!("[X] ERROR: Failed to generate script for character {}.",
                                   char_name);
-                        return Err(e);  // FIXME this was a quick fix and possibly could be written better -Nick
+                        return Err(e);
                     }
                     self.players.push(player);
                 }
@@ -184,7 +184,7 @@ impl SceneFragment {
         let mut lines_spoken: usize;
         let mut last_speaker = String::new();
 
-        // check to see if title contains only whitespace. If not, prints out scene ttitle
+        // check to see if title contains only whitespace. If not, prints out scene title
         if !self.title.trim().is_empty() {
             println!("{}", self.title);
         }
@@ -199,11 +199,6 @@ impl SceneFragment {
 
                 if let Some(line_num) = player.next_line() {
                     line_exists = true;
-                    if cur_line == 0 && line_num > 0 {
-                        if WHINGE_MODE.load(Ordering::SeqCst) {
-                            eprintln!("ERROR: Missing line 0");
-                        }
-                    }
 
                     if line_num == cur_line {
                         player.speak(&mut last_speaker);

@@ -23,7 +23,7 @@ impl Play {
     }
 
     /// modified function for ScriptConfig bool parameters and SceneFragment types
-    fn process_config(&mut self, script_config: ScriptConfig) -> Result<(), u8> { // I changed this to not be pub, hopefully that is fine
+    fn process_config(&mut self, script_config: ScriptConfig) -> Result<(), u8> {
         let mut title = String::new();
 
         for config in script_config {
@@ -75,7 +75,7 @@ impl Play {
             let config_file_name = config_line_tokens[CONFIG_FILE_INDEX].to_string();
             script_config.push((false, config_file_name));
 
-            if config_line_tokens.len() >= SCRIPT_CONFIG_LINE_TOKENS && WHINGE_MODE.load(Ordering::SeqCst) {
+            if config_line_tokens.len() > SCRIPT_CONFIG_LINE_TOKENS && WHINGE_MODE.load(Ordering::SeqCst) {
                 eprintln!("Provided script has a config line with the wrong number of tokens.");
             }
         }

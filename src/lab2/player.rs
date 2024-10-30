@@ -18,7 +18,7 @@ pub struct Player {
 }
 
 impl Ord for Player {
-    /// TODO We should do some extensive testing to ensure this works correctly, add documentation
+
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         if self.eq(other) {
             return cmp::Ordering::Equal;
@@ -44,7 +44,7 @@ impl Ord for Player {
 }
 
 impl PartialOrd for Player {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
