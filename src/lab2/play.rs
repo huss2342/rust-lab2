@@ -3,7 +3,7 @@
 ///
 
 use crate::lab2::declarations::*;
-use crate::lab2::script_gen::{grab_trimmed_file_lines, CONFIG_LINE_TOKENS, TITLE_LINE};
+use crate::lab2::script_gen::{grab_trimmed_file_lines};
 use std::sync::atomic::Ordering;
 use crate::lab2::scene_fragment::SceneFragment;
 
@@ -156,62 +156,10 @@ impl Play {
             }
             fragment.recite();
 
-            // if let Some(next_fragment) = iter.peek() {
-            //     fragment.exit(next_fragment);
-            // }
             if iter.peek().is_none() {
                 fragment.exit_all();
             }
             previous_fragment = Some(fragment);
         }
     }
-
-    // pub fn recite(&mut self) {
-    //     if self.fragments.is_empty() {
-    //         eprintln!("ERROR: No scene fragments");
-    //         return;
-    //     }
-    //
-    //     // instantiate an iterator
-    //     let mut iter = self.fragments.iter_mut().peekable();
-    //     // let mut prev_iter = self.fragments.iter().peekable();
-    //     let mut previous_fragment: Option<SceneFragment> = None;
-    //     // let first_scene = true;
-    //
-    //     // handle first fragment separately to avoid mutable borrows
-    //     // if let Some(fragment) = iter.next() {
-    //     //     fragment.enter_all();
-    //     //     fragment.recite();
-    //     //     previous_fragment = Some(fragment);
-    //     // }
-    //
-    //     // handle last fragment
-    //     // while let Some(fragment) = iter. {
-    //     for fragment in &mut self.fragments {
-    //
-    //         if let Some(previous) = previous_fragment {
-    //             previous.exit(fragment);
-    //             fragment.enter(previous);
-    //         } else {
-    //             fragment.enter_all();
-    //         }
-    //
-    //         fragment.recite();
-    //
-    //
-    //
-    //         if iter.peek().is_none() {
-    //             fragment.exit_all();
-    //         } else {
-    //             // if let Some(previous) = previous_fragment {
-    //             //     // if let Some(next_fragment) = iter.peek() {
-    //             //     //     fragment.exit(next_fragment);
-    //             //
-    //             // }
-    //         }
-    //
-    //         previous_fragment = Some(fragment);
-    //         prev_iter.next();
-    //     }
-    // }
 }

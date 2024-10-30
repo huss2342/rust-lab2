@@ -13,7 +13,6 @@ use lab2::return_wrapper::ReturnWrapper;
 fn main() -> ReturnWrapper {
     // open script config file
     let mut script_file_name = String::new();
-    let mut play_scene = String::new(); // TODO why this no use?
 
     match parse_args(&mut script_file_name) {
         Ok(()) => {
@@ -31,29 +30,11 @@ fn main() -> ReturnWrapper {
         }
     }
     ReturnWrapper::new(Ok(()))
-
-    // FIXME what's the commented code here  -Nick
-    // match script_gen(&config_file_name, &mut play_title, &mut play) {
-    //     Ok(()) => {
-    //         play.sort();
-    //         recite(&play_title, &play);
-    //         Ok(())
-    //     },
-    //     Err(..) => {
-    //         eprintln!("ERROR: Script Generation Failed.");
-    //         Err(FAILED_TO_GENERATE_SCRIPT)
-    //     }
-    // }
 }
 
 fn parse_args(script_file_name: &mut String) -> Result<(), u8> {
-    // let mut args: Vec<String> = Vec::new();
-    // TODO if this is meant to be mut it's probably for a reason so we should make sure we are using it right
-    let mut args: Vec<String> = env::args().collect();
 
-    // for arg in env::args() {
-    //     args.push(arg);
-    // }
+    let args: Vec<String> = env::args().collect();
 
     if args.len() < MIN_ARGS || args.len() > MAX_ARGS ||
         (args.len() == MAX_ARGS && args[OPT_WHINGE_POS] != "whinge") {
@@ -69,7 +50,7 @@ fn parse_args(script_file_name: &mut String) -> Result<(), u8> {
     Ok(())
 }
 
-// Prints a helpful usage message
+// prints helpful usage message
 fn usage(script_name: &String) {
     println!("usage: {} <script_file_name> [whinge]", script_name);
 }

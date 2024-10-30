@@ -6,7 +6,7 @@ use crate::lab2::declarations::{CharName, FAILED_TO_GENERATE_SCRIPT, WHINGE_MODE
 use crate::lab2::player::Player;
 use crate::lab2::script_gen::{grab_trimmed_file_lines, CharacterTextFile,
                               CHARACTER_FILE_CONFIG_LINE_INDEX, CHARACTER_NAME_CONFIG_LINE_INDEX,
-                              CONFIG_LINE_TOKENS, TITLE_LINE, CHARACTER_CONFIG_LINE};
+                              CONFIG_LINE_TOKENS, CHARACTER_CONFIG_LINE};
 use std::sync::atomic::Ordering;
 
 type PlayConfig = Vec<(CharName, CharacterTextFile)>;
@@ -177,17 +177,14 @@ impl SceneFragment {
         }
     }
 
-    // TODO: really not sure about this one. Nick: yeah it's def not working based on errors
-    // TODO: from part 12 and skipped over - Becky: added part to print title. Should we create a while loop?
-    // Also modify the appropriate place in the SceneFragment struct's associated recite method that prints out the struct's title string, so that it only prints it if it is non-blank (has at least one non-whitespace token).
-    // DONE Nick: I think I fixed it, Becky had almost fixed it completely and I ended up more or less recoding what you had
+    // modify the appropriate place in the SceneFragment struct's associated recite method that prints out the struct's title string, so that it only prints it if it is non-blank (has at least one non-whitespace token).
     pub fn recite(&mut self) {
         let mut cur_line: usize = 0;
         let mut line_exists = true;
-        let mut lines_spoken: usize = 0;
+        let mut lines_spoken: usize;
         let mut last_speaker = String::new();
 
-        // check to see if ttitle contains only whitespace. If not, prints out scene ttitle
+        // check to see if title contains only whitespace. If not, prints out scene ttitle
         if !self.title.trim().is_empty() {
             println!("{}", self.title);
         }
