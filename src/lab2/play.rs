@@ -37,7 +37,7 @@ impl Play {
                     let mut fragment = SceneFragment::new(&title);
 
                     if let Err(..) = fragment.prepare(&fragment_file_name) {
-                        eprintln!("[X] ERROR: Failed to generate script from file: {}.",
+                        eprintln!("ERROR: Failed to generate script from file: {}.",
                                   fragment_file_name);
                         return Err(FAILED_TO_GENERATE_SCRIPT);
                     }

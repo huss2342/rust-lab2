@@ -57,6 +57,7 @@ implementing an iterator over the fragments. I also needed to make the enter and
 for access in the recite function.
 
 ## Testing
+Please refer to Testing_ouput.txt for outputs of various tests.
 1. Run script file from terminal using incorrect file name
 2. Mis-spelling of file name and/or "whinge"
 3. Additional or less arguments in command line

@@ -52,6 +52,6 @@ fn parse_args(script_file_name: &mut String) -> Result<(), u8> {
 
 // prints helpful usage message
 fn usage(script_name: &String) {
-    println!("usage: {} <script_file_name> [whinge]", script_name);
+   eprintln!("usage: {} <script_file_name> [whinge]", script_name);
 }
 

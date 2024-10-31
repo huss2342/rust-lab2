@@ -123,7 +123,7 @@ impl SceneFragment {
                 (char_name, part_file_name) => {
                     let mut player = Player::new(&char_name);
                     if let Err(e) = player.prepare(&part_file_name) {
-                        eprintln!("[X] ERROR: Failed to generate script for character {}.",
+                        eprintln!("ERROR: Failed to generate script for character {}.",
                                   char_name);
                         return Err(e);
                     }
