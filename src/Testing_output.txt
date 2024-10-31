@@ -1,0 +1,180 @@
+Testing File
+
+1. Test: added file to cargo run: cargo run partial_hamlet_act_ii_script.txt additional_file.txt whinge
+Output:
+ERROR: Bad command line arguments provided.
+Error: 1
+
+
+2. Test: incorrect spelling of file name: cargo run partial_hamlet_act_ii_scrip.txt whinge
+Ouput: 
+ERROR: Failed to open file 'partial_hamlet_act_ii_scrip.txt': No such file or directory (os error 2)
+ERROR: Failed to open or read script file 'partial_hamlet_act_ii_scrip.txt'
+Error: 2
+
+
+3. Test: Removed Polonias from hamlet_ii_1a_config.txt: cargo run partial_hamlet_act_ii_script.txt whinge
+Output:
+Provided config line has the wrong number of tokens.
+[Enter Reynaldo.]
+Hamlet Prince of Denmark ACT II Scene I A room in Polonius house by William Shakespeare
+ERROR: Missing line 0
+ERROR: Missing line 1
+
+4. Test: Removed "[scene]" from first line of script file
+Output:
+ERROR: Failed to open file 'Hamlet': No such file or directory (os error 2)
+ERROR: Failed to generate script from file: Hamlet.
+Error: 2
+
+5a. Test: Removed one of the Polonias names from hamlet_ii_1a_config.txt in whinge mode
+Output: Listed: ERROR: Missing line for any lines by Polonias in scene 1a. He enters later in scene 1b. This same error is
+produced if whitespace is removed between the two Polonias.
+
+Hamlet Prince of Denmark ACT II Scene I A room in Polonius house by William Shakespeare
+[Enter Reynaldo.]
+
+Reynaldo:
+I will, my lord.
+ERROR: Missing line 3
+ERROR: Missing line 4
+ERROR: Missing line 5
+My lord, I did intend it.
+ERROR: Missing line 7
+ERROR: Missing line 8
+ERROR: Missing line 9
+ERROR: Missing line 10
+ERROR: Missing line 11
+ERROR: Missing line 12
+ERROR: Missing line 13
+ERROR: Missing line 14
+ERROR: Missing line 15
+ERROR: Missing line 16
+Ay, very well, my lord.
+ERROR: Missing line 18
+ERROR: Missing line 19
+ERROR: Missing line 20
+ERROR: Missing line 21
+ERROR: Missing line 22
+ERROR: Missing line 23
+ERROR: Missing line 24
+ERROR: Missing line 25
+As gaming, my lord.
+ERROR: Missing line 27
+ERROR: Missing line 28
+My lord, that would dishonour him.
+ERROR: Missing line 30
+ERROR: Missing line 31
+ERROR: Missing line 32
+ERROR: Missing line 33
+ERROR: Missing line 34
+ERROR: Missing line 35
+ERROR: Missing line 36
+ERROR: Missing line 37
+But, my good lord,--
+ERROR: Missing line 39
+Ay, my lord,
+I would know that.
+ERROR: Missing line 42
+ERROR: Missing line 43
+ERROR: Missing line 44
+ERROR: Missing line 45
+ERROR: Missing line 46
+ERROR: Missing line 47
+ERROR: Missing line 48
+ERROR: Missing line 49
+ERROR: Missing line 50
+ERROR: Missing line 51
+ERROR: Missing line 52
+ERROR: Missing line 53
+Very good, my lord.
+ERROR: Missing line 55
+ERROR: Missing line 56
+At 'closes in the consequence,' at 'friend or so,' and
+gentleman.'
+ERROR: Missing line 59
+ERROR: Missing line 60
+ERROR: Missing line 61
+ERROR: Missing line 62
+ERROR: Missing line 63
+ERROR: Missing line 64
+ERROR: Missing line 65
+ERROR: Missing line 66
+ERROR: Missing line 67
+ERROR: Missing line 68
+ERROR: Missing line 69
+ERROR: Missing line 70
+ERROR: Missing line 71
+ERROR: Missing line 72
+ERROR: Missing line 73
+My lord, I have.
+ERROR: Missing line 75
+Good my lord!
+ERROR: Missing line 77
+I shall, my lord.
+ERROR: Missing line 79
+Well, my lord.
+[Exit Reynaldo.]
+[Enter Polonius.]
+[Enter Ophelia.]
+ERROR: Missing line 0
+
+
+Polonius:
+How now, Ophelia! what's the matter?
+
+
+5b. Test: Removed one of the Polonias names from hamlet_ii_1a_config.txt without whinge mode
+Output: Skipped all of Polonias's lines in scene 1a. He enters later in scene 1b. This same error is produced if the
+whitespace is removed between two Polonias.
+
+Hamlet Prince of Denmark ACT II Scene I A room in Polonius house by William Shakespeare
+[Enter Reynaldo.]
+
+Reynaldo:
+I will, my lord.
+My lord, I did intend it.
+Ay, very well, my lord.
+As gaming, my lord.
+My lord, that would dishonour him.
+But, my good lord,--
+Ay, my lord,
+I would know that.
+Very good, my lord.
+At 'closes in the consequence,' at 'friend or so,' and
+gentleman.'
+My lord, I have.
+Good my lord!
+I shall, my lord.
+Well, my lord.
+[Exit Reynaldo.]
+
+Hamlet Prince of Denmark ACT II Scene I A room in Polonius house by William Shakespeare
+[Enter Polonius.]
+[Enter Ophelia.]
+
+Polonius:
+How now, Ophelia! what's the matter?
+
+6a. Test: Removed last line from Guildenstern in scene 2a and ran in whinge mode:
+Output: This output is the same as removing the number from the line or removing the white space between the number
+and the line
+
+Guildenstern:
+Heavens make our presence and our practices
+ERROR: Missing line 41
+
+Queen:
+Ay, amen!
+
+
+
+6b. Test: Removed last line from Guildenstern in scene 2a without whinge:
+Output: This output is the same as removing the number from the line or removing the white space between the number
+and the line
+
+Guildenstern:
+Heavens make our presence and our practices
+
+Queen:
+Ay, amen!
