@@ -61,10 +61,11 @@ Please refer to Testing_ouput.txt for outputs of various tests.
 1. Run script file from terminal using incorrect file name
 2. Mis-spelling of file name and/or "whinge"
 3. Additional or less arguments in command line
-4. Misspelling of tokens in config file
-5. Removal and addition of number of tokens in config file
-6. Addition and removal of whitespace in both config and text files
-7. Removal of number token or script line in text file
+4. Removal of "[scene]" in script file
+5. Misspelling of tokens in config files
+6. Removal and addition of number of tokens in config file
+7. Addition and removal of whitespace in both config and text files
+8. Removal of number token or script line in text file
 
 ## Usage
 1. Unzip the project folder.
