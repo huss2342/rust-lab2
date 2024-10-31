@@ -29,6 +29,7 @@ impl SceneFragment {
 
     ///
     /// Print a message for every player that needs to enter for the next scene.
+    /// Do this after printing out the title of the scene if applicable.
     ///
     /// # Parameters
     ///
@@ -36,6 +37,12 @@ impl SceneFragment {
     /// - `next`: A reference to another instance of the struct SceneFragment
     ///
     pub fn enter(&self, next: &SceneFragment) {
+        // check to see if title contains only whitespace. If not, prints out scene title
+        if !self.title.trim().is_empty() {
+            println!(); // print a newline first to make the printout cleaner
+            println!("{}", self.title);
+        }
+
         for next_player in &next.players {
             // determine if the previous scene contains the player from the next scene
             let mut contains = false;
@@ -54,12 +61,19 @@ impl SceneFragment {
 
     ///
     /// Print a message for every player in this scene stating that they are entering.
+    /// Do this after printing out the title of the scene if applicable.
     ///
     /// # Parameters
     ///
     /// - `self`: A reference to self
     ///
     pub fn enter_all(&self) {
+        // check to see if title contains only whitespace. If not, prints out scene title
+        if !self.title.trim().is_empty() {
+            println!(); // print a newline first to make the printout cleaner
+            println!("{}", self.title);
+        }
+
         for player in &self.players {
             println!("[Enter {}.]", player.name);
         }
@@ -183,11 +197,6 @@ impl SceneFragment {
         let mut line_exists = true;
         let mut lines_spoken: usize;
         let mut last_speaker = String::new();
-
-        // check to see if title contains only whitespace. If not, prints out scene title
-        if !self.title.trim().is_empty() {
-            println!("{}", self.title);
-        }
 
         // return; // I don't want to deal with all the lines while debugging other things FIXME remove before submitting
 
