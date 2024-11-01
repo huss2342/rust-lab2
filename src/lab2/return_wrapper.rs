@@ -1,6 +1,3 @@
-/// ADD FILE HEADER
-///
-///
 
 use std::process::{Termination, ExitCode};
 use crate::lab2::declarations::SUCCESS;

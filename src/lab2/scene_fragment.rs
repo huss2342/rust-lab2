@@ -1,7 +1,3 @@
-/// ADD FILE HEADER
-///
-///
-
 use crate::lab2::declarations::{CharName, FAILED_TO_GENERATE_SCRIPT, WHINGE_MODE};
 use crate::lab2::player::Player;
 use crate::lab2::script_gen::{grab_trimmed_file_lines, CharacterTextFile,
@@ -116,7 +112,7 @@ impl SceneFragment {
     }
 
 
-    /// TODO Add Documentation
+    /// create the players vector
     fn process_config(&mut self, play_config: PlayConfig) -> Result<(), u8> {
         for config in play_config {
             match config {
@@ -135,7 +131,7 @@ impl SceneFragment {
         Ok(())
     }
 
-    /// TODO Add Documentation
+    /// add a config file to the scene
     fn add_config(&self, config_line: &String, play_config: &mut PlayConfig) {
         let config_line_tokens: Vec<&str> = config_line.split_whitespace().collect();
 
@@ -153,8 +149,7 @@ impl SceneFragment {
         }
     }
 
-    /// TODO Add Documentation
-    /// Nick: I needed to change this because this was built for how lab1 was built
+    /// read from the config file
     fn read_config(&self, config_file_name: &String, play_config: &mut PlayConfig) -> Result<(), u8> {
         let mut lines: Vec<String> = Vec::new();
 
@@ -173,8 +168,7 @@ impl SceneFragment {
         }
     }
 
-    // was script_gen
-    /// Added implementation to sort players by lines. Do we need to make the Err messages more explicit?
+    /// call methods to prepare the scene
     pub fn prepare(&mut self, config_file_name: &String) -> Result<(), u8> {
         let mut play_config: PlayConfig = vec![];
 
@@ -191,14 +185,12 @@ impl SceneFragment {
         }
     }
 
-    // modify the appropriate place in the SceneFragment struct's associated recite method that prints out the struct's title string, so that it only prints it if it is non-blank (has at least one non-whitespace token).
+    /// print out the lines for the scene
     pub fn recite(&mut self) {
         let mut cur_line: usize = 0;
         let mut line_exists = true;
         let mut lines_spoken: usize;
         let mut last_speaker = String::new();
-
-        // return; // I don't want to deal with all the lines while debugging other things FIXME remove before submitting
 
         while line_exists {
             line_exists = false;

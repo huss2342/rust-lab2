@@ -1,6 +1,3 @@
-/// ADD FILE HEADER
-///
-///
 
 use crate::lab2::declarations::*;
 use crate::lab2::script_gen::{grab_trimmed_file_lines};

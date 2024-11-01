@@ -1,6 +1,3 @@
-/// ADD FILE HEADER
-///
-///
 
 use std::sync::atomic;
 use std::cmp;
@@ -65,7 +62,6 @@ impl PartialEq for Player {
 impl Eq for Player {}
 
 impl Player {
-    /// TODO Add Documentation
     pub fn new(name: &String) -> Player {
         Player {
             name: name.clone(),
@@ -74,7 +70,7 @@ impl Player {
         }
     }
 
-    /// TODO Add Documentation
+    /// add a line to the lines vector
     fn add_script_line(&mut self, line: &String) {
         if line.is_empty() { return; }
 
@@ -100,7 +96,7 @@ impl Player {
         }
     }
 
-    /// TODO Add Documentation
+    /// prepare the player struct
     pub fn prepare (&mut self, part_file_name: &String) -> Result<(), u8> {
         let mut file_lines_ref: Vec<String> = Vec::new();
 
@@ -115,7 +111,7 @@ impl Player {
         Ok(())
     }
 
-    /// TODO Add Documentation
+    /// print out this player's next line
     pub fn speak(&mut self, last_speaker: &mut String) {
         if self.index >= self.lines.len() {
             return ()
@@ -128,7 +124,6 @@ impl Player {
         self.index += 1;
     }
 
-    /// TODO make documentation better
     /// return the next line number for this player if there is a next line
     pub fn next_line(&self) -> Option<usize> {
         if self.index < self.lines.len() {

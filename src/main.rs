@@ -1,6 +1,3 @@
-/// ADD FILE HEADER
-///
-///
 
 pub mod lab2;
 use std::env;

@@ -1,6 +1,3 @@
-/// ADD FILE HEADER
-///
-///
 
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -17,7 +14,7 @@ pub static CHARACTER_NAME_CONFIG_LINE_INDEX: usize = 0;
 pub static CHARACTER_FILE_CONFIG_LINE_INDEX: usize = 1;
 pub static CONFIG_LINE_TOKENS: usize = 2;
 
-// TODO for the rest of the functions: documentation example taken from
+// documentation example taken from:
 // https://deterministic.space/machine-readable-inline-markdown-code-cocumentation.html#markdown-formatting-conventions
 
 ///

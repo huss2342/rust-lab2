@@ -1,6 +1,3 @@
-/// ADD FILE HEADER
-///
-///
 
 use std::sync::atomic::AtomicBool;
 
