@@ -25,14 +25,19 @@ a continued effort as we progress through this lab.
 
 ## Structs
 
-all the structs were made public
-- Player: handles the individual character data: name, lines (a vector of line number, and their text)
-and current position.
-- Play: handles the general script and contains Fragments which is an array of sceneFragments.
+The code was refactored into two public structs:
 
-Play and Player were the first two structs we created.
-The Play struct prepares and pushes the scene fragments and it recites the play.
-The Player struct also prepares the player's own script lines and allows the player to speak the line.
+### Player Struct
+- Handles the individual character data (name, lines, current position)
+- Handles line delivery and sorting
+- Implements ordering traits for proper sequencing
+- Prepares the player's own script lines and allows the player to speak the lines.
+
+### Play Struct
+- Manages script configuration and scene fragments
+- Handles the scene transitions and character interactions
+- Controls the general script playback
+- Prepares and pushes the scene fragments and recites the play.
 
 ## Return Wrapper
 
